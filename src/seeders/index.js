@@ -7,4 +7,4 @@ async function seedCatalogue() {
   await seedCities(City);
   await seedStops(Stop, City);
 }
-module.exports = { seedCatalogue };
+module.exports = { seedCatalogue };   
