@@ -1,4 +1,4 @@
-const { AppError } = require('../../shared/errors');
+import { AppError }from'../../shared/errors';
 
 class BoardingService {
   constructor({ boardingRepository, reservationsApi, catalogueApi, clock, transactionRunner }) {
@@ -52,5 +52,4 @@ function toBoardingView(record, ticket) {
     passengerName: ticket.passengerName,
   };
 }
-
-module.exports = BoardingService;
+export default BoardingService;

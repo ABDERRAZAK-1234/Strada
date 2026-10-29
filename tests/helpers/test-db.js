@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const { MongoMemoryReplSet } = require('mongodb-memory-server');
 
 let replSet = null;
@@ -32,4 +32,4 @@ async function disconnectTestDb() {
   }
 }
 
-module.exports = { connectTestDb, clearTestDb, disconnectTestDb };
+export { connectTestDb, clearTestDb, disconnectTestDb };

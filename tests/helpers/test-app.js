@@ -1,9 +1,9 @@
-const request = require('supertest');
-const { asValue } = require('awilix');
-const { createApp } = require('../../src/app');
-const { seedAll } = require('../../scripts/seed');
-const { connectTestDb, disconnectTestDb } = require('./test-db');
-const { loginAll } = require('./auth-helpers');
+import request from'supertest';
+import { asValue }from 'awilix';
+import { createApp }from '../../src/app';
+import { seedAll } from'../../scripts/seed';
+import { connectTestDb, disconnectTestDb } from'./test-db';
+import { loginAll } from'./auth-helpers';
 
 function buildTestApp(overrides = {}) {
   const { app } = createApp({ overrides });
@@ -27,4 +27,4 @@ async function stopTestEnvironment() {
   await disconnectTestDb();
 }
 
-module.exports = { buildTestApp, fake, startTestEnvironment, stopTestEnvironment };
+export { buildTestApp, fake, startTestEnvironment, stopTestEnvironment };

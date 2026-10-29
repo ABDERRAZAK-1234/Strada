@@ -15,4 +15,4 @@ function createBoardingController({ boardingService }) {
   return { checkTicket };
 }
 
-module.exports = createBoardingController;
+export default createBoardingController;

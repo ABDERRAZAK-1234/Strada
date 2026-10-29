@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
  
 const boardingRecordSchema = new mongoose.Schema({
   bookingId: { type: mongoose.Schema.Types.ObjectId, required: true, unique: true },
@@ -7,5 +7,5 @@ const boardingRecordSchema = new mongoose.Schema({
   checkedAt: { type: Date, required: true },
 });
  
-module.exports = mongoose.model('BoardingRecord', boardingRecordSchema);
+export default mongoose.model('BoardingRecord', boardingRecordSchema);
  

@@ -1,8 +1,8 @@
-const { asClass, asFunction } = require('awilix');
-const BoardingRepository = require('./boarding.repository');
-const BoardingService = require('./boarding.service');
-const createBoardingController = require('./boarding.controller');
-const createBoardingRouter = require('./boarding.routes');
+import { asClass, asFunction } from'awilix';
+import BoardingRepository from'./boarding.repository';
+import BoardingService from'./boarding.service';
+import createBoardingController from'./boarding.controller';
+import createBoardingRouter from './boarding.routes';
 
 function registerBoardingModule(container) {
   container.register({
@@ -12,4 +12,4 @@ function registerBoardingModule(container) {
   });
 }
 
-module.exports = { registerBoardingModule, createBoardingRouter };
+export  { registerBoardingModule, createBoardingRouter };

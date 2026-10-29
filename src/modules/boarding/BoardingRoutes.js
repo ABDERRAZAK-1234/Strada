@@ -1,5 +1,5 @@
-const express = require('express');
-const { validateBoardingRequest } = require('./boarding.validation');
+import express from 'express';
+import { validateBoardingRequest } from './boarding.validation';
 
 function createBoardingRouter({ boardingController, authenticate, requireRole }) {
   const router = express.Router();
@@ -15,4 +15,4 @@ function createBoardingRouter({ boardingController, authenticate, requireRole })
   return router;
 }
 
-module.exports = createBoardingRouter;
+export default createBoardingRouter;
