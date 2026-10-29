@@ -8,6 +8,7 @@ import { App } from '../app.js';
 import { Server } from '../server.js';
 
 import { TransactionRunner } from '../shared/transactions/transactionRunner.js';
+import { SystemClock } from '../shared/clock/systemClock.js';
 
 const container = createContainer();
 
@@ -21,6 +22,7 @@ container.register({
     transactionRunner: asClass(TransactionRunner).singleton(),
     app: asClass(App).singleton(),
     server: asClass(Server).singleton(),
+    clock: asClass(SystemClock).singleton(),
 });
 
 export default container;
