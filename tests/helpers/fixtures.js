@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const { authHeader } = require('./auth-helpers');
+import mongoose from 'mongoose';
+import { authHeader } from './auth-helpers';
 
 
 
@@ -151,7 +151,7 @@ function countBoardingRecords() {
   return mongoose.connection.collection('boardingrecords').countDocuments();
 }
 
-module.exports = {
+export  {
   inHours,
   requireStatus,
   expectError,

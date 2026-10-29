@@ -1,5 +1,5 @@
-const BoardingRecord = require('./boarding-record.model');
-const { AppError } = require('../../shared/errors');
+import BoardingRecord from './boarding-record.model';
+import { AppError } from '../../shared/errors';
 
 const DUPLICATE_KEY_ERROR = 11000;
 
@@ -17,4 +17,4 @@ class BoardingRepository {
   }
 }
 
-module.exports = BoardingRepository;
+export default  BoardingRepository;

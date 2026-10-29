@@ -1,5 +1,5 @@
-const Joi = require('joi');
-const { validateRequest } = require('../../shared/validate-request');
+import Joi from'joi';
+import { validateRequest } from '../../shared/validate-request';
 
 const OBJECT_ID_PATTERN = /^[0-9a-f]{24}$/i;
 
@@ -15,4 +15,4 @@ const validateBoardingRequest = validateRequest({
   }),
 });
 
-module.exports = { validateBoardingRequest };
+export { validateBoardingRequest };

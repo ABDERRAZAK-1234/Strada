@@ -1,4 +1,4 @@
-const BoardingService = require('../../src/modules/boarding/boarding.service');
+import BoardingService from '../../src/modules/boarding/boarding.service';
 
 const FIXED_TIME = new Date('2027-03-15T08:45:00Z');
 const FAKE_SESSION = { name: 'fake-session' };
