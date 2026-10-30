@@ -1,4 +1,5 @@
 import express from 'express';
+import { errorHandler } from './shared/middlewares/errorHandler.js';
 
 export class App {
   constructor({ apiRouter }) {
@@ -19,6 +20,8 @@ export class App {
     });
 
     this.expressApp.use('/api/v1', this.apiRouter);
+
+    this.expressApp.use(errorHandler);
   }
 
   getInstance() {
