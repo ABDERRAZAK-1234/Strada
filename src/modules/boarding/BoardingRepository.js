@@ -1,6 +1,5 @@
 import BoardingRecord from './boarding-record.model';
-import { AppError } from '../../shared/errors';
-
+import { AppError } from '../../shared/errors/index.js';
 const DUPLICATE_KEY_ERROR = 11000;
 
 class BoardingRepository {

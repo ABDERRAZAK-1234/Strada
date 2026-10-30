@@ -1,4 +1,4 @@
-import { AppError }from'../../shared/errors';
+import { AppError }from'../../shared/errors/AppError';
 
 class BoardingService {
   constructor({ boardingRepository, reservationsApi, catalogueApi, clock, transactionRunner }) {
