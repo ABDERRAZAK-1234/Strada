@@ -1,6 +1,6 @@
 import request from'supertest';
 import { asValue }from 'awilix';
-import { createApp }from '../../src/app';
+import { createApp }from '../../src/app.js';
 import { seedAll } from'../../scripts/seed';
 import { connectTestDb, disconnectTestDb } from'./test-db';
 import { loginAll } from'./auth-helpers';
