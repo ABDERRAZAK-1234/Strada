@@ -1,6 +1,5 @@
 import Joi from'joi';
-import { validateRequest } from '../../shared/validate-request';
-
+import { validateRequest } from '../../shared/middlewares/validateRequest.js';
 const OBJECT_ID_PATTERN = /^[0-9a-f]{24}$/i;
 
 const validateBoardingRequest = validateRequest({
