@@ -1,0 +1,175 @@
+paths:
+  /departures/{id}/boarding-records:
+    post:
+      tags: [Boarding]
+      summary: Check a ticket at boarding (agent only)
+      description: |
+        The agent presents a ticket code for a departure that is in BOARDING state.
+        The booking becomes BOARDED and one BoardingRecord is created, in one transaction.
+        The client sends only ticketCode. The agent and the time come from the server.
+
+        Order of checks: authentication (401), role (403), request format (400),
+        departure exists (404), departure is BOARDING (409 BOARDING_CLOSED),
+        ticket exists (404), ticket belongs to this departure (409 WRONG_DEPARTURE),
+        ticket is CONFIRMED (409 TICKET_NOT_VALID).
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Departure id
+          schema: { type: string, example: 507f1f77bcf86cd799439030 }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [ticketCode]
+              additionalProperties: false
+              properties:
+                ticketCode:
+                  type: string
+                  example: b77e0d92-2d6c-44a3-b280-60924ab08596
+      responses:
+        '201':
+          description: Ticket checked
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id: { type: string }
+                      bookingId: { type: string }
+                      departureId: { type: string }
+                      agentId: { type: string }
+                      checkedAt: { type: string, format: date-time }
+                      seatNumber: { type: integer, example: 2 }
+                      passengerName: { type: string, example: Sara Amrani }
+        '400':
+          description: VALIDATION_ERROR (bad id, missing ticketCode, or a forbidden field such as agentId or checkedAt)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '401':
+          description: AUTH_REQUIRED
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '403':
+          description: FORBIDDEN (only an agent can board)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '404':
+          description: RESOURCE_NOT_FOUND (unknown departure) or TICKET_NOT_FOUND (unknown code)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '409':
+          description: BOARDING_CLOSED, WRONG_DEPARTURE or TICKET_NOT_VALID (cancelled, already used, or scanned twice at the same moment)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /departures/{id}/cancel:
+    post:
+      tags: [Boarding]
+      summary: Cancel a whole departure (admin only)
+      description: |
+        Only an OPEN departure can be cancelled. In one transaction the departure becomes
+        CANCELLED and all its CONFIRMED bookings become CANCELLED (reason DEPARTURE).
+        Their ticket codes can no longer be used. No request body is needed.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, example: 507f1f77bcf86cd799439030 }
+      responses:
+        '200':
+          description: Departure cancelled
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id: { type: string }
+                      status: { type: string, example: CANCELLED }
+        '400':
+          description: VALIDATION_ERROR (badly formed id)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '401':
+          description: AUTH_REQUIRED
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '403':
+          description: FORBIDDEN (only an admin can cancel a departure)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '404':
+          description: RESOURCE_NOT_FOUND
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '409':
+          description: INVALID_DEPARTURE_TRANSITION (departure is BOARDING, DEPARTED or already CANCELLED)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /departures/{id}/seats:
+    get:
+      tags: [Boarding]
+      summary: Seat plan and availability of a departure (public)
+      description: |
+        Lists the seats frozen on the departure. available is false when a CONFIRMED or BOARDED
+        booking holds the seat. This is only a view: it does not reserve a seat. A free seat on
+        a departure that is cancelled, boarding, departed or already past still cannot be booked.
+        No passenger names and no ticket codes are ever returned.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, example: 507f1f77bcf86cd799439030 }
+      responses:
+        '200':
+          description: Seat plan
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      departureId: { type: string }
+                      seats:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            seatNumber: { type: integer, example: 2 }
+                            available: { type: boolean, example: false }
+        '400':
+          description: VALIDATION_ERROR (badly formed id)
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+        '404':
+          description: RESOURCE_NOT_FOUND
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }

@@ -7,17 +7,22 @@ import { DatabaseConnection } from './db.js';
 import { App } from '../app.js';
 import { Server } from '../server.js';
 
+import { TransactionRunner } from '../shared/transactions/transactionRunner.js';
+import { SystemClock } from '../shared/clock/systemClock.js';
+
 const container = createContainer();
 
 container.register({
-  mongoUri: asValue(env.mongoUri),
-  port: asValue(env.port),
+    mongoUri: asValue(env.mongoUri),
+    port: asValue(env.port),
 
-  apiRouter: asValue(express.Router()),
+    apiRouter: asValue(express.Router()),
 
-  databaseConnection: asClass(DatabaseConnection).singleton(),
-  app: asClass(App).singleton(),
-  server: asClass(Server).singleton()
+    databaseConnection: asClass(DatabaseConnection).singleton(),
+    transactionRunner: asClass(TransactionRunner).singleton(),
+    app: asClass(App).singleton(),
+    server: asClass(Server).singleton(),
+    clock: asClass(SystemClock).singleton(),
 });
 
 export default container;
